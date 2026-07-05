@@ -1,9 +1,4 @@
 <?php
-/**
- * Plugin Loader
- *
- * @package SmartQuoteBlockConverter
- */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -11,14 +6,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class SQBC_Loader {
 
-	/**
-	 * Initialize plugin.
-	 */
 	public function init() {
 
-		// Admin Area
+		require_once SQBC_PLUGIN_PATH . 'includes/class-admin.php';
+		require_once SQBC_PLUGIN_PATH . 'includes/class-scanner.php';
+
 		if ( is_admin() ) {
-			require_once SQBC_PLUGIN_PATH . 'includes/class-admin.php';
 			new SQBC_Admin();
 		}
 
