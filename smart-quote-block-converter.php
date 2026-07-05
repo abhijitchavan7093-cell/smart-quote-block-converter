@@ -9,52 +9,65 @@
  * Text Domain: smart-quote-block-converter
  */
 
-if (!defined('ABSPATH')) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-define('SQBC_VERSION', '1.0.0');
-define('SQBC_PLUGIN_FILE', __FILE__);
-define('SQBC_PLUGIN_PATH', plugin_dir_path(__FILE__));
-define('SQBC_PLUGIN_URL', plugin_dir_url(__FILE__));
+define( 'SQBC_VERSION', '1.0.0' );
+define( 'SQBC_PLUGIN_FILE', __FILE__ );
+define( 'SQBC_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+define( 'SQBC_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-class SQBC_Plugin {
+/**
+ * Main Plugin Class
+ */
+final class SQBC_Plugin {
 
-    public function __construct() {
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
 
-        register_activation_hook(__FILE__, array($this, 'activate'));
-        register_deactivation_hook(__FILE__, array($this, 'deactivate'));
+		register_activation_hook( __FILE__, array( $this, 'activate' ) );
+		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 
-        add_action('plugins_loaded', array($this, 'load_plugin'));
+		add_action( 'plugins_loaded', array( $this, 'load_plugin' ) );
 
-    }
+	}
 
-    public function activate() {
+	/**
+	 * Activation
+	 */
+	public function activate() {
 
-        add_option('sqbc_version', SQBC_VERSION);
+		update_option( 'sqbc_version', SQBC_VERSION );
 
-    }
+	}
 
-    public function deactivate() {
+	/**
+	 * Deactivation
+	 */
+	public function deactivate() {
 
-    }
+		// Reserved for future use.
 
-    public function load_plugin() {
+	}
 
-        $this->includes();
+	/**
+	 * Load Plugin
+	 */
+	public function load_plugin() {
 
-        if (is_admin()) {
-            new SQBC_Admin();
-        }
+		require_once SQBC_PLUGIN_PATH . 'includes/class-loader.php';
 
-    }
+		$loader = new SQBC_Loader();
+		$loader->init();
 
-    private function includes() {
-
-        require_once SQBC_PLUGIN_PATH . 'includes/class-admin.php';
-
-    }
+	}
 
 }
 
+/**
+ * Start Plugin
+ */
 new SQBC_Plugin();
